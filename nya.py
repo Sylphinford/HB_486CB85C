@@ -28,6 +28,7 @@ async def bangzhu(bot, ev):
 folder_rec_onitan = R.get('gurunya/onitan/').path
 folder_gif_miao = R.get('gurunya/miao/').path
 folder_gif_wang= R.get('gurunya/wang/').path
+folder_rec_nya= R.get('gurunya/nya_rec/').path
 
 ######################################################
 
@@ -49,6 +50,12 @@ def get_gif_wang():
     rec = R.get('gurunya/wang/', filename)
     return rec
 
+def get_rec_nya():
+    files = os.listdir(folder_rec_nya)
+    filename = random.choice(files)
+    rec = R.get('gurunya/nya_rec/', filename)
+    return rec
+
 ###################################################
 
 
@@ -66,12 +73,19 @@ async def rec_onitan(bot, ev) -> MessageSegment:
 #@sv.on_prefix("喵",only_to_me=False)
 @sv.on_keyword('喵', only_to_me=False)
 async def miao(bot, ev) -> MessageSegment:
+    if random.random() < 0.35: 
+        file = get_rec_nya()
+        try:
+                rec = MessageSegment.record(f'file:///{os.path.abspath(file.path)}')
+                await bot.send(ev, rec)#gurunya
+        except CQHttpError:
+                sv.logger.error("发送失败")  
     file = get_gif_miao()
     try:
         rec = MessageSegment.image(f'file:///{os.path.abspath(file.path)}')
         await bot.send(ev, rec)
     except CQHttpError:
-        sv.logger.error("Failed to send")
+        sv.logger.error("发送失败")
         
 
 
