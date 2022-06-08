@@ -73,19 +73,21 @@ async def rec_onitan(bot, ev) -> MessageSegment:
 #@sv.on_prefix("喵",only_to_me=False)
 @sv.on_keyword('喵', only_to_me=False)
 async def miao(bot, ev) -> MessageSegment:
-    if random.random() < 0.35: 
+    if random.random() < 0.35: #gurunya
         file = get_rec_nya()
         try:
                 rec = MessageSegment.record(f'file:///{os.path.abspath(file.path)}')
-                await bot.send(ev, rec)#gurunya
+                await bot.send(ev, rec)
         except CQHttpError:
-                sv.logger.error("发送失败")  
-    file = get_gif_miao()
-    try:
-        rec = MessageSegment.image(f'file:///{os.path.abspath(file.path)}')
-        await bot.send(ev, rec)
-    except CQHttpError:
-        sv.logger.error("发送失败")
+                sv.logger.error("Failed to send")  
+    else:
+        file = get_gif_miao()
+        try:
+                rec = MessageSegment.image(f'file:///{os.path.abspath(file.path)}')
+                await bot.send(ev, rec)
+        except CQHttpError:
+                sv.logger.error("Failed to send")
+        
         
 
 
@@ -107,5 +109,5 @@ async def wang(bot, ev) -> MessageSegment:
         rec = MessageSegment.image(f'file:///{os.path.abspath(file.path)}')
         await bot.send(ev, rec)
     except CQHttpError:
-        sv.logger.error("发送失败")
+        sv.logger.error("Failed to send")
   
